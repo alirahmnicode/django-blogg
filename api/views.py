@@ -7,3 +7,8 @@ from blog.models import Article
 class ArticleList(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    
+
+class ArticleDetails(generics.RetrieveAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
