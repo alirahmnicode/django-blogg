@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>articles</title>
+{% endblock head %}
+
+
+{% block content %}
+<div style="margin-top: 50px;">
+    <div style="text-align: center;">
+        <span class="title">#{{tag}}</span>
+    </div>
+    <div class="articles">
+        {% for article in articles %}
+        <div class="article last">
+            <div>
+                <a href="{% url 'article:detail' slug=article.slug pk=article.pk %}">
+                    <img src="{{article.image.url}}" alt="">
+                    <h2>
+                        {{article.title}}
+                    </h2>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

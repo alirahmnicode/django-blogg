@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>{{article.title}}</title>
+{% endblock head %}
+
+{% block content %}
+{% include 'inc/nav.html' %}
+<div class="article-container">
+    <div class="article-content">
+        <div class="article-img">
+            <img src="{{article.image.url}}" alt="">
+        </div>
+        <div>
+            <h1>{{article.title}}</h1>
+            <p>{{article.body}}</p>
+        </div>
+        <div class="tags">
+            {% for tag in article.tags.all %}
+            #<a href="{% url 'article:tag' tag=tag.tag tagid=tag.id %}">{{tag.tag}}</a>
+            {% endfor %}
+        </div>
+        <div>
+            {% if request.user == article.user %}
+            <div style="display: flex;">
+                <div class="control"><a href="{% url 'article:delete' pk=article.pk %}">delete</a></div>
+                <div class="control"><a href="{% url 'article:edit' pk=article.pk %}">edit</a></div>
+            </div>
+            {% endif %}
+            <div>
+                <button class="like">Like</button>
+                <span class="like-count">{{article.likes.count}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="similar_articles">
+        <div class="articles">
+            {% for article in similar_articles %}
+            <div class="article">
+                <div>
+                    <a href="{% url 'article:detail' slug=article.slug pk=article.pk %}">
+                        <img src="{{article.image.url}}" alt="">
+                        <h2>
+                            {{article.title}}
+                        </h2>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="module" src="{% static 'js/app.js' %}"></script>
+{% endblock js %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'inc/nav.html' %}
+<div class="all-article">
+    {% for article in articles %}
+    <div class="article box">
+        <div>
+            <a href="{% url 'article:detail' slug=article.slug pk=article.pk %}">
+                <img src="{{article.image.url}}" alt="">
+                <h2>
+                    {{article.title}}
+                </h2>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'js/scroll.js' %}"></script>
+{% endblock js %}
+    

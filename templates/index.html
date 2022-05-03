@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+<title>home</title>
+{% endblock head %}
+
+{% block content %}
+<!-- nav -->
+{% include 'inc/nav.html' %}
+<!-- message -->
+{% include 'inc/message.html' %}
+<div class="content">
+    <!-- best articles -->
+    <div class="header-content">
+        <span class="title">Best Articles</span>
+        <div class="best-articles">
+            <div class="left-box"></div>
+            <div class="right-box"></div>
+            {% for article in best_article %}
+            <div class="article best">
+                <div class="article-cover">
+                    <a href="{% url 'article:detail' slug=article.slug pk=article.pk %}">
+                        <img src="{{article.image.url}}" alt="">
+                    </a>
+                </div>
+                <div class="article-inf">
+                    <h2>
+                        {{article.title}}
+                    </h2>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- last articles -->
+    <div style="margin-top: 50px;">
+        <div style="text-align: center;">
+            <span class="title">Last Articles</span>
+        </div>
+        <div class="articles">
+            {% for article in last_articles %}
+            <div class="article last">
+                <div>
+                    <a href="{% url 'article:detail' slug=article.slug pk=article.pk %}">
+                        <img src="{{article.image.url}}" alt="">
+                        <h2>
+                            {{article.title}}
+                        </h2>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/app.js' %}"></script>
+{% endblock content %}

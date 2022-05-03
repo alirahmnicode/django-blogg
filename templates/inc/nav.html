@@ -1,0 +1,33 @@
+<nav>
+    <div class="logo">
+        <h1>
+            <a href="/">BlogiFy</a>
+        </h1>
+    </div>
+    <div class="search">
+        <form method="get" autocomplete="off">
+            {% csrf_token %}
+            <input type="search" name="search" id="search" placeholder="search...">
+        </form>
+        <div class="search-box">
+            <div style="position: absolute;z-index: 2;" onclick="this.parentElement.style.display='none';">
+                <span class="closebtn">&times;</span>
+            </div>
+            <div class="search-result">
+
+            </div>
+        </div>
+    </div>
+    <div>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'user:logout' %}">logout</a>
+        <a href="{% url 'article:add' %}">add</a>
+        <a href="{% url 'password_change' %}">change</a>
+        <a href="{% url 'password_reset' %}">reset</a>
+        {% else %}
+        <a href="{% url 'user:login' %}">login</a>
+        <a href="{% url 'user:signin' %}">signin</a>
+        {% endif %}
+        <a href="{% url 'article:all' %}">All Articles</a>
+    </div>
+</nav>
