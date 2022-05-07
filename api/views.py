@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from .serializers import ArticleSerializer , AddingTagSerializer
+from rest_framework.permissions import IsAuthenticated ,IsAdminUser
+from .serializers import ArticleSerializer , AddingTagSerializer ,UserSerializer
 
 from blog.models import Article, Tag
 
@@ -21,7 +22,11 @@ class ArticleDetails(generics.RetrieveAPIView):
 class ArticleCreateView(generics.CreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        print(serializer.validated_data)
+        serializer.save(user=self.request.user)
 
 class ArticleUpdateView(generics.UpdateAPIView):
     queryset = Article.objects.all()
@@ -36,6 +41,7 @@ class ArticleDeleteView(generics.DestroyAPIView):
 class AddingTagView(generics.CreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = AddingTagSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class AddingLikeView(APIView):
@@ -64,3 +70,10 @@ class FilterByTag(APIView):
         articles = Article.objects.filter(tags__tag__icontains=tag)
         serializer = ArticleSerializer(articles,many=True)
         return Response(serializer.data,status=200)
+
+
+
+class UsersListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]

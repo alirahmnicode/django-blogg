@@ -6,7 +6,8 @@ from .views import (ArticleList ,
                     ArticleDeleteView,
                     AddingTagView,
                     AddingLikeView,
-                    FilterByTag)
+                    FilterByTag,
+                    UsersListView)
 
 
 app_name = 'api'
@@ -20,4 +21,5 @@ urlpatterns = [
     path('article/create-tag/' , AddingTagView.as_view()),
     path('article/add-like/<int:pk>/' , AddingLikeView.as_view()),
     path('articles/tag/<str:tag>/' , FilterByTag.as_view()),
+    path('users/list/' , UsersListView.as_view()),
 ]

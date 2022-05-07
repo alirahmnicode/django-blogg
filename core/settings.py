@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # "django.contrib.postgres",
     # third app
     'rest_framework',
+    'rest_framework.authtoken',
     # local app
     "blog.apps.BlogConfig",
     "users.apps.UsersConfig",
@@ -162,3 +163,11 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'alirahmanicode@gmail.com'
 EMAIL_HOST_PASSWORD = '09213141774'
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
