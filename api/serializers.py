@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from blog.models import Article, Tag
+from blog.models import Article
+from tag.models import Tag
 
 
 class ArticleSerializer(serializers.ModelSerializer):

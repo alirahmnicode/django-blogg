@@ -9,7 +9,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated ,IsAdminUser
 from .serializers import ArticleSerializer , AddingTagSerializer ,UserSerializer
 
-from blog.models import Article, Tag
+from blog.models import Article
+from tag.models import Tag
 
 
 class ArticleList(generics.ListAPIView):

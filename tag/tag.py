@@ -1,19 +1,20 @@
-from .models import TaggedItem
+from .models import TaggedItem , Tag
 
 
 class Taggit:
     def __init__(self, tags, obj):
         self.tags = tags
         self.obj = obj
+        self.split_tags = None
 
     def split_tag(self):
-        return self.tags.split(",")
+        self.split_tags = self.tags.split(',')
+        self.save_object()
 
     def save_object(self):
-        for tag in self.split_tag():
-            try:
-                r_tag = TaggedItem.objects.get(tag=tag)
-                self.obj.tags.add(tag)
-            except:
-                tag = TaggedItem.objects.create(tag=tag)
-                self.obj.tags.add(tag)
+        for tag in self.split_tags:
+            tag = Tag.objects.get_or_create(label=tag)
+            tag_item = TaggedItem(content_object=self.obj,tag=tag[0])
+            tag_item.save()
+                
+            

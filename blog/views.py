@@ -6,11 +6,11 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
-
 from .models import Article
-from .forms import AddArticleForm, EditArticleForm, AddTag
-from .tag import Taggit
+from .forms import AddArticleForm, EditArticleForm
 from .items import item
+from tag.tag import Taggit
+from tag.forms import TagForm
 
 
 # list of articles
@@ -94,8 +94,9 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
                 user=request.user,
                 slug=slugify(cd["title"]),
             )
+            # create tag object set article for tag
             tag = Taggit(cd["tags"], article)
-            tag.save_object()
+            tag.split_tag()
             return redirect("/")
 
 
@@ -106,7 +107,7 @@ class EditArticleView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         article = get_object_or_404(Article, pk=kwargs["pk"])
         form = EditArticleForm(instance=article)
-        tag_form = AddTag()
+        tag_form = TagForm()
         return render(
             request,
             "blog/article_update_form.html",
@@ -126,7 +127,7 @@ class AddNewTag(LoginRequiredMixin, View):
     login_url = "user:login"
 
     def post(self, request, *args, **kwargs):
-        form = AddTag(request.POST)
+        form = TagForm(request.POST)
         if form.is_valid():
             tag = form.save()
             article = get_object_or_404(Article, pk=kwargs["articleId"])
