@@ -4,6 +4,19 @@ from django.contrib.auth.models import User
 from tag.models import TaggedItem
 
 
+
+class ArticleManager(models.Manager):
+    
+    def get_queryset(self):
+        return super().get_queryset().all().order_by("-updated")
+
+    def last_articles(self):
+        return self.get_queryset()[:10]
+
+    def best_aricles(self):
+        return self.get_queryset().all().order_by("-likes_count")[:3]
+
+
 class Article(models.Model):
     title = models.CharField(max_length=400)
     body = models.TextField()
@@ -16,6 +29,8 @@ class Article(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True , null=True)
+
+    objects = ArticleManager()
 
     def __str__(self):
         return self.title

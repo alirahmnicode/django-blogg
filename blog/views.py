@@ -21,12 +21,8 @@ class ArticlesListView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ArticlesListView, self).get_context_data(
             *args, **kwargs)
-        # context['best_articles']
-        context["last_articles"] = Article.objects.all().order_by(
-            "-updated")[:10]
-        context["best_article"] = Article.objects.all().order_by(
-            "-updated", "-likes_count"
-        )[:3]
+        context["last_articles"] = Article.objects.last_articles()
+        context["best_article"] = Article.objects.best_aricles()
         return context
 
 
@@ -96,7 +92,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
             )
             # create tag object set article for tag
             tag = Taggit(cd["tags"], article)
-            tag.split_tag()
+            tag.save_object()
             return redirect("/")
 
 
@@ -108,10 +104,11 @@ class EditArticleView(LoginRequiredMixin, View):
         article = get_object_or_404(Article, pk=kwargs["pk"])
         form = EditArticleForm(instance=article)
         tag_form = TagForm()
+        context = {"form": form, "obj": article, "tag_form": tag_form}
         return render(
             request,
             "blog/article_update_form.html",
-            {"form": form, "obj": article, "tag_form": tag_form},
+            context
         )
 
     def post(self, request, *args, **kwargs):
