@@ -2,7 +2,7 @@ var myDiv = document.getElementsByClassName('all-article')[0]
 var number = 0
 $(window).scroll(function (event) {
     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-        number += 5
+        number += 10
         var url = `${window.location.origin}/articles/all/?n=${number}`
         $.ajax({
             type: "GET",

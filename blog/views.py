@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
 from .models import Article
 from .forms import AddArticleForm, EditArticleForm
-from .items import item
+from .listing_obj import Listing
 from tag.tag import Taggit
 from tag.forms import TagForm
 
@@ -33,24 +33,22 @@ class AllArticleListView(View):
         """
         If the user reaches the bottom of the page, 
         a ajax request will be given to this view 
-        and the next five articles will be displayed 
+        and the next 10 articles will be displayed 
         """
-        next_articles = request.GET.get('n')
+        end_articles = request.GET.get('n')
         # if request not ajax
-        if not next_articles:
-            articles = Article.objects.all().order_by("-updated")[:10]
+        if not end_articles:
+            articles = Article.objects.last_articles()
             context = {
                 'articles': articles
             }
             return render(request, 'blog/article_list.html', context)
         # if send request with ajax
         else:
-            next_articles = int(next_articles)
-            next_articles += 10
-            previous_articles = next_articles - 5
-            articles = Article.objects.all().order_by("-updated")[previous_articles:next_articles]
-            # create dict for response
-            data = item(articles)
+            objs = Article.objects.all()
+            listing = Listing(objs=objs)
+            listing.range_of_objects(10, end_articles)
+            data = listing.get_objects()
             return JsonResponse({'articles': data})
 
 
@@ -186,5 +184,6 @@ class SearchView(View):
             articles_by_tag = Article.objects.filter(
                 tags__tag__icontains=query_name)
             all_articles = articles | articles_by_tag
-            data = item(all_articles)
+            listing = Listing()
+            data = listing.list_objects(all_articles)
         return JsonResponse({'articles': data})

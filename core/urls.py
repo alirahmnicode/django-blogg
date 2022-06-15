@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('' , include('blog.urls')),
     path('' , include('django.contrib.auth.urls')),
+    path('tag/' , include('tag.urls')),
     path('account/', include('users.urls')),
     path('api/', include('api.urls')),
     path('api/token-auth/',obtain_auth_token),

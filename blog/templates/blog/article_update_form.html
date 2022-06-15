@@ -12,7 +12,14 @@
             {{form.as_p}}
             <button type="submit">edit</button>
         </form>
-        <form action="{% url 'article:addtag' obj.pk %}" method="post">
+        <div>
+            {% for tag in obj.tags.all %}
+                <div>
+                    <a href="">#{{tag}}</a> <a href="{% url 'tag:delete' obj_id=obj.pk tag_id=tag.tag.pk %}">delete</a>
+                </div>
+            {% endfor %}
+        </div>
+        <form action="{% url 'tag:add' obj_id=obj.pk %}" method="post">
             {% csrf_token %}
             {{tag_form.as_p}}
             <button type="submit">add</button>

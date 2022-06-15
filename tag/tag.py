@@ -9,12 +9,10 @@ class Taggit:
 
     def split_tag(self):
         self.split_tags = self.tags.split(',')
-        self.save_object()
-
+        
     def save_object(self):
+        self.split_tag()
         for tag in self.split_tags:
             tag = Tag.objects.get_or_create(label=tag)
             tag_item = TaggedItem(content_object=self.obj,tag=tag[0])
             tag_item.save()
-                
-            
