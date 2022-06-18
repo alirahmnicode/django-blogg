@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.auth.models import User
 from tag.models import TaggedItem
@@ -31,6 +32,17 @@ class Article(models.Model):
     status = models.BooleanField(default=True , null=True)
 
     objects = ArticleManager()
+
+    def get_similar_articles(self):
+        article_tags = self.tags.values_list("tag__id", flat=True)
+        similar_articles = (
+            Article.objects.filter(tags__in=article_tags)
+            .exclude(id=self.id)
+        )
+        similar_articles = similar_articles.annotate(same_tags=Count("tags")).order_by(
+            "-same_tags", "-updated"
+        )[:4]
+        return similar_articles
 
     def __str__(self):
         return self.title

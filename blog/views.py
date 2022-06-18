@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import slugify
-from django.db.models import Count
 from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -56,16 +55,8 @@ class AllArticleListView(View):
 class ArticleDetail(View):
     def get(self, request, *args, **kwargs):
         article = get_object_or_404(Article, pk=kwargs["pk"])
-        article_tags_ids = article.tags.values_list("id", flat=True)
-        similar_articles = (
-            Article.objects.filter(tags__in=article_tags_ids)
-            .exclude(id=article.id)
-            .order_by("-updated")
-        )
-        similar_articles = similar_articles.annotate(same_tags=Count("tags")).order_by(
-            "-same_tags", "-updated"
-        )[:4]
-        context = {"article": article, "similar_articles": similar_articles}
+        similar_articles = article.get_similar_articles()
+        context = {"article": article, 'similar_articles':similar_articles}
         return render(request, "blog/blog_detail.html", context)
 
 
