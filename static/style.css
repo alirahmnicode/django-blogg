@@ -33,6 +33,7 @@ nav a {
   align-items: center;
   margin-top: 50px;
 }
+
 .articles {
   display: flex;
   align-items: center;
@@ -54,9 +55,10 @@ nav a {
   margin: 10px 10px 10px 0;
 }
 
-.control > a {
+.control>a {
   color: #fff;
 }
+
 .best-articles {
   display: flex;
   margin: auto;
@@ -103,16 +105,33 @@ nav a {
   height: 200px;
   object-fit: cover;
 }
+
 /* article detial */
 .article-img img {
   width: 100%;
+}
+
+.similar_articles .article img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.similar_articles .article img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.similar_articles .articles {
+  justify-content: flex-start;
 }
 
 .article-content {
   margin: 50px auto;
 }
 
-.article-content > div {
+.article-content>div {
   padding: 5px 10px;
 }
 
@@ -120,6 +139,7 @@ nav a {
   width: 100%;
   padding: 0 20px;
 }
+
 /* all article */
 .all-article {
   display: flex;
@@ -128,6 +148,7 @@ nav a {
   justify-content: center;
   margin: auto;
 }
+
 /* form */
 .form {
   display: flex;
@@ -136,12 +157,12 @@ nav a {
   margin: 40px 0;
 }
 
-.form > form {
+.form>form {
   background: #ececec;
   padding: 8px 20px;
 }
 
-.form > form > p > input {
+.form>form>p>input {
   margin: 15px;
   outline: none;
   padding: 5px;
@@ -150,7 +171,7 @@ nav a {
   border-radius: 5px;
 }
 
-.form > form > p > label {
+.form>form>p>label {
   color: #4f4f4f;
 }
 
@@ -164,8 +185,9 @@ nav a {
   cursor: pointer;
   margin-top: 10px;
 }
+
 /* search box */
-.search > form > input {
+.search>form>input {
   border: none;
   outline: none;
   padding: 5px;
@@ -199,6 +221,7 @@ nav a {
 .search {
   position: relative;
 }
+
 .search-result {
   background: #fff;
   width: 100%;
@@ -223,11 +246,13 @@ nav a {
   display: flex;
   justify-content: space-between;
 }
+
 /* responsive */
 @media only screen and (max-width: 850px) {
   .best-articles {
     flex-direction: column-reverse;
   }
+
   .left-box {
     display: flex;
     justify-content: center;
@@ -244,6 +269,7 @@ nav a {
   .right-box img {
     width: 400px;
   }
+
   .lef-box img {
     width: 100px;
     height: 100px;
@@ -256,7 +282,8 @@ nav a {
     height: 100%;
     padding: 10px;
   }
-  nav > div {
+
+  nav>div {
     margin: 10px 0;
   }
 }
