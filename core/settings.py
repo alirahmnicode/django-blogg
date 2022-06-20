@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     # local app
     "blog.apps.BlogConfig",
     "users.apps.UsersConfig",
-    "api.apps.ApiConfig",
-    "tag.apps.TagConfig",
 ]
 
 MIDDLEWARE = [
