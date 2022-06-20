@@ -1,8 +1,8 @@
 from django.db import models
 from django.db.models import Count
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.auth.models import User
-from tag.models import TaggedItem
+from taggit.managers import TaggableManager
+from django.utils.text import slugify
 
 
 
@@ -24,7 +24,7 @@ class Article(models.Model):
     user = models.ForeignKey(User , on_delete=models.CASCADE , null=True)
     image = models.ImageField(upload_to='blog' , blank=True)
     slug = models.SlugField(null=True , max_length=255)
-    tags = GenericRelation(TaggedItem)
+    tags = TaggableManager()
     likes = models.ManyToManyField(User , related_name='likes' , blank=True)
     likes_count = models.IntegerField(default=0 , blank=True , null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -32,6 +32,10 @@ class Article(models.Model):
     status = models.BooleanField(default=True , null=True)
 
     objects = ArticleManager()
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(self.title)
+        super(Article, self).save(*args, **kwargs)
 
     def get_similar_articles(self):
         article_tags = self.tags.values_list("tag__id", flat=True)

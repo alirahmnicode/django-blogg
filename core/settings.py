@@ -40,13 +40,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # "django.contrib.postgres",
     # third app
-    'rest_framework',
-    'rest_framework.authtoken',
+    "rest_framework",
+    "rest_framework.authtoken",
+    "django_filters",
+    "taggit",
     # local app
     "blog.apps.BlogConfig",
     "users.apps.UsersConfig",
-    "api.apps.ApiConfig",
-    "tag.apps.TagConfig",
 ]
 
 MIDDLEWARE = [
