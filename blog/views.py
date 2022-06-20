@@ -6,10 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
 from .models import Article
-from .forms import AddArticleForm, EditArticleForm
+from .forms import ArticleForm
 from .listing_obj import Listing
-from tag.tag import Taggit
-from tag.forms import TagForm
 
 
 # list of articles
@@ -65,23 +63,15 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     login_url = "user:login"
 
     def get(self, request, *args, **kwargs):
-        context = {"form": AddArticleForm}
+        context = {"form": ArticleForm}
         return render(request, "blog/add_article.html", context)
 
     def post(self, request, *args, **kwargs):
-        form = AddArticleForm(request.POST, request.FILES)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            cd = form.cleaned_data
-            article = Article.objects.create(
-                title=cd["title"],
-                body=cd["body"],
-                image=cd["image"],
-                user=request.user,
-                slug=slugify(cd["title"]),
-            )
-            # create tag object set article for tag
-            tag = Taggit(cd["tags"], article)
-            tag.save_object()
+            obj = form.save(commit=False)            
+            obj.user = request.user
+            obj.save()
             return redirect("/")
 
 
@@ -91,9 +81,8 @@ class EditArticleView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         article = get_object_or_404(Article, pk=kwargs["pk"])
-        form = EditArticleForm(instance=article)
-        tag_form = TagForm()
-        context = {"form": form, "obj": article, "tag_form": tag_form}
+        form = ArticleForm(instance=article)
+        context = {"form": form, "obj": article}
         return render(
             request,
             "blog/article_update_form.html",
@@ -102,7 +91,7 @@ class EditArticleView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         article = get_object_or_404(Article, pk=kwargs["pk"])
-        form = EditArticleForm(request.POST, request.FILES, instance=article)
+        form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             obj = form.save()
             return redirect("/")
@@ -110,15 +99,16 @@ class EditArticleView(LoginRequiredMixin, View):
 
 # add tag for instance article
 class AddNewTag(LoginRequiredMixin, View):
-    login_url = "user:login"
+    pass
+#     login_url = "user:login"
 
-    def post(self, request, *args, **kwargs):
-        form = TagForm(request.POST)
-        if form.is_valid():
-            tag = form.save()
-            article = get_object_or_404(Article, pk=kwargs["articleId"])
-            article.tags.add(tag)
-            return redirect(request.META.get("HTTP_REFERER"))
+#     def post(self, request, *args, **kwargs):
+#         form = TagForm(request.POST)
+#         if form.is_valid():
+#             tag = form.save()
+#             article = get_object_or_404(Article, pk=kwargs["articleId"])
+#             article.tags.add(tag)
+#             return redirect(request.META.get("HTTP_REFERER"))
 
 
 # delete article
