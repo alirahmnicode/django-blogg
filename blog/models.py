@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Count
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
+from django.utils.text import slugify
 
 
 
@@ -31,6 +32,10 @@ class Article(models.Model):
     status = models.BooleanField(default=True , null=True)
 
     objects = ArticleManager()
+
+    def save(self, *args, **kwargs) -> None:
+        self.slug = slugify(self.title)
+        super(Article, self).save(*args, **kwargs)
 
     def get_similar_articles(self):
         article_tags = self.tags.values_list("tag__id", flat=True)
