@@ -98,19 +98,6 @@ class EditArticleView(LoginRequiredMixin, View):
             return redirect("/")
 
 
-# add tag for instance article
-class AddNewTag(LoginRequiredMixin, View):
-    pass
-#     login_url = "user:login"
-
-#     def post(self, request, *args, **kwargs):
-#         form = TagForm(request.POST)
-#         if form.is_valid():
-#             tag = form.save()
-#             article = get_object_or_404(Article, pk=kwargs["articleId"])
-#             article.tags.add(tag)
-#             return redirect(request.META.get("HTTP_REFERER"))
-
 
 # delete article
 class ArticleDeleteView(LoginRequiredMixin, View):
