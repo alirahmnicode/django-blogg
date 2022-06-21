@@ -38,7 +38,7 @@ class Article(models.Model):
         super(Article, self).save(*args, **kwargs)
 
     def get_similar_articles(self):
-        article_tags = self.tags.values_list("tag__id", flat=True)
+        article_tags = self.tags.values_list("id", flat=True)
         similar_articles = (
             Article.objects.filter(tags__in=article_tags)
             .exclude(id=self.id)
