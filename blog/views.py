@@ -72,6 +72,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
             obj = form.save(commit=False)            
             obj.user = request.user
             obj.save()
+            form.save_m2m()
             return redirect("/")
 
 
