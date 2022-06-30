@@ -18,8 +18,9 @@ Sign in
         {% csrf_token %}
         <p class="alert">check username</p>
         {{form.as_p}}
-        <button type="submit">Sign in</button>
+        <button type="submit">Sign up</button>
     </form>
+    <p>Do have any account? <a href="{% url 'user:login' %}">login</a> </p>
 </div>
 {% endblock content %}
 
