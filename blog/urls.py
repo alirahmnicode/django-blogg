@@ -11,7 +11,7 @@ urlpatterns = [
     path('articles/add-article/' , views.ArticleCreateView.as_view() , name="add"),
     path('articles/edit-article/<int:pk>/' , views.EditArticleView.as_view() , name="edit"),
     path('articles/delete-article/<int:pk>/' , views.ArticleDeleteView.as_view() , name="delete"),
-    path('articles/list/<str:tag>/<int:tagid>/' , views.SearchArticlesWithTag.as_view() , name="tag"),
+    path('articles/list/<str:tag>/<int:tagid>/' , views.FilterByTag.as_view() , name="tag"),
     path('articles/like/<int:pk>/' , views.AddLikeView.as_view() , name="like"),
     path('blog/search/' , views.SearchView.as_view() , name="search"),
 ]

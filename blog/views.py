@@ -118,7 +118,7 @@ class ArticleDeleteView(LoginRequiredMixin, View):
         return redirect("/")
 
 
-class SearchArticlesWithTag(View):
+class FilterByTag(View):
     def get(self, request, *args, **kwargs):
         articles = Article.objects.filter(tags=kwargs["tagid"])
         tag = kwargs["tag"]
@@ -150,9 +150,6 @@ class SearchView(View):
         query_name = request.GET.get('q')
         if query_name != None and query_name != '':
             articles = Article.objects.filter(title__icontains=query_name)
-            articles_by_tag = Article.objects.filter(
-                tags__tag__icontains=query_name)
-            all_articles = articles | articles_by_tag
             listing = Listing()
-            data = listing.list_objects(all_articles)
+            data = listing.list_objects(articles)
         return JsonResponse({'articles': data})
