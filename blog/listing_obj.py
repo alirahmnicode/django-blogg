@@ -22,7 +22,7 @@ class Listing:
                     "user": obj.user.username,
                     "image": obj.image.url,
                     "slug": obj.slug,
-                    "tags": [tag.tag for tag in obj.tags.all()],
+                    "tags": [tag.name for tag in obj.tags.all()],
                 }
                 data.append(item)
         return data
