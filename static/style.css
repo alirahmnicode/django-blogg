@@ -205,17 +205,12 @@ nav a {
 
 .closebtn {
   margin-left: 15px;
-  color: white;
   font-weight: bold;
   float: right;
   font-size: 22px;
   line-height: 20px;
   cursor: pointer;
   transition: 0.3s;
-}
-
-.closebtn:hover {
-  color: black;
 }
 
 .search {
@@ -227,6 +222,9 @@ nav a {
   width: 100%;
   position: absolute;
   box-shadow: 0 2px 1px #9f9d9ded;
+  box-shadow: 6px 9px 61px 3px #9f9d9d82;
+  z-index: 1;
+  border-radius: 5px;
 }
 
 .search-result p,
