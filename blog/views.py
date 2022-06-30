@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.text import slugify
 from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -94,7 +93,7 @@ class EditArticleView(LoginRequiredMixin, View):
         article = get_object_or_404(Article, pk=kwargs["pk"])
         form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
-            obj = form.save()
+            form.save()
             return redirect("/")
 
 
@@ -132,16 +131,8 @@ class AddLikeView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         article = get_object_or_404(Article, pk=kwargs["pk"])
-        if request.user in article.likes.all():
-            # unlike
-            article.likes.remove(request.user)
-        else:
-            # like
-            article.likes.add(request.user)
-        article.likes_count = article.likes.count()
-        article.save()
-
-        return JsonResponse({"likes": article.likes.count()})
+        likes = article.like(request)
+        return JsonResponse({"likes": likes})
 
 
 # serach view

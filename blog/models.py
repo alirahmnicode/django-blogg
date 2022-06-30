@@ -48,6 +48,17 @@ class Article(models.Model):
         )[:4]
         return similar_articles
 
+    def like(self, request):
+        if request.user in self.likes.all():
+            # unlike
+            self.likes.remove(request.user)
+        else:
+            # like
+            self.likes.add(request.user)
+        self.likes_count = self.likes.count()
+        self.save()
+        return self.likes_count
+
     def __str__(self):
         return self.title
 
